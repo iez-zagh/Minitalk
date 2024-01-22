@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.c                                           :+:      :+:    :+:   */
+/*   client_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iez-zagh <iez-zagh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/16 09:05:32 by iez-zagh          #+#    #+#             */
-/*   Updated: 2024/01/22 18:16:36 by iez-zagh         ###   ########.fr       */
+/*   Created: 2024/01/21 00:06:09 by iez-zagh          #+#    #+#             */
+/*   Updated: 2024/01/22 18:27:32 by iez-zagh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,20 @@ void	send_signal(int pid, char char_)
 	int	bit_to_send;
 
 	i = 8;
-	bit_to_send = char_;
 	while (i > 0)
 	{
 		i--;
 		bit_to_send = (char_ >> i) & 1;
 		if (bit_to_send == 1)
-			kill(pid, SIGUSR1);
+		{
+			if (kill(pid, SIGUSR1) == -1)
+				exit(EXIT_FAILURE);
+		}
 		else
-			kill(pid, SIGUSR2);
+		{
+			if (kill(pid, SIGUSR2) == -1)
+				exit(EXIT_FAILURE);
+		}
 		usleep(400);
 	}
 }
@@ -45,12 +50,15 @@ int	main(int ac, char **av)
 	int	u;
 	int	i;
 
-	if (signal(SIGUSR1, signal_handling) == SIG_ERR
-		|| signal(SIGUSR2, signal_handling) == SIG_ERR)
-		exit (0);
+	signal(SIGUSR1, signal_handling);
 	if (ac == 3)
 	{
 		u = atoi(av[1]);
+		if (u <= 0)
+		{
+			ft_printf("bad pid process!!\n");
+			exit (EXIT_FAILURE);
+		}
 		i = 0;
 		while (av[2][i])
 		{
