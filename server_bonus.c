@@ -20,35 +20,45 @@ int checker(unsigned char rec_char)
 		return (3);
 	else if (rec_char >= 192)
 		return (2);
-	return (1);
+	return (-1);
 }
 
 static unsigned char res[4];
 
-void checker2(int j, unsigned char rec_char, int *i)
+void checker2(int *j, unsigned char rec_char, int *i, int *u)
 {
 	static int i1 = 0;
 
+	// ft_printf("[[%c]]\n", rec_char);
+	// if (rec_char == ' ')
+	// 	ft_printf(" ");
 	if (j > 0)
 	{
 		res[i1] = rec_char;
 		i1++;
 		*i = 0;
 	}
-	else if (j == 0)
+	if (*j == 1)
 	{
 		res[i1] = '\0';
 		ft_printf("%s", res);
 		res[0] = '\0';
 		i1 = 0;
 		*i = 0;
+		*j = 0;
+		*u = 0;
 	}
 }
 
 void check_for_char(para *my_para, unsigned char rec_char)
 {
-	static int j = 0;
+	static int	j = 0;
+	static int	u = 0;
 
+
+	if (u == 0)
+		j = checker(rec_char);
+	// ft_printf ("[[%d]]\n", j);
 	if (rec_char == '\0')
 		kill(my_para->client_pid, SIGUSR1);
 	if (rec_char < 127 && res[0] == '\0')
@@ -56,14 +66,9 @@ void check_for_char(para *my_para, unsigned char rec_char)
 		ft_printf("%c", rec_char);
 		my_para->array_index = 0;
 	}
-	else if (!res[0])
-	{
-		j = checker(rec_char);
-		printf("[%d|%c] | 5\n", j, rec_char);
-	}
 	if (j >= 0)
 	{
-		checker2(j, rec_char, &my_para->array_index);
+		checker2(&j, rec_char, &my_para->array_index, &u);
 		j--;
 	}
 }
