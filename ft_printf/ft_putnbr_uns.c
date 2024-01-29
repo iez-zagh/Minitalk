@@ -1,25 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_bzero.c                                         :+:      :+:    :+:   */
+/*   ft_putnbr_uns.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iez-zagh <iez-zagh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/22 18:24:24 by iez-zagh          #+#    #+#             */
-/*   Updated: 2024/01/22 18:25:26 by iez-zagh         ###   ########.fr       */
+/*   Created: 2024/01/26 06:38:20 by iez-zagh          #+#    #+#             */
+/*   Updated: 2024/01/26 06:38:22 by iez-zagh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
+#include "ft_printf.h"
 
-void	ft_bzero(void *s)
+void	ft_putnbr_uns(unsigned int nbr, int *len)
 {
-	int	i;
-
-	i = 0;
-	while (i < 4)
+	if (nbr < 10)
+		ft_putchar(nbr + '0', len);
+	else
 	{
-		*((unsigned char *)(s + i)) = 0;
-		i++;
+		ft_putnbr_uns(nbr / 10, len);
+		ft_putnbr_uns(nbr % 10, len);
 	}
 }

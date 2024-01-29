@@ -5,12 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: iez-zagh <iez-zagh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/16 10:18:15 by iez-zagh          #+#    #+#             */
-/*   Updated: 2024/01/16 20:58:07 by iez-zagh         ###   ########.fr       */
+/*   Created: 2024/01/26 06:38:30 by iez-zagh          #+#    #+#             */
+/*   Updated: 2024/01/26 06:38:32 by iez-zagh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
+#include "ft_printf.h"
 
 void	ft_putstr(const char *s, int *len)
 {

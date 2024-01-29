@@ -1,34 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putnbr.c                                        :+:      :+:    :+:   */
+/*   ft_print_adress.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: iez-zagh <iez-zagh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/16 10:18:02 by iez-zagh          #+#    #+#             */
-/*   Updated: 2024/01/16 10:18:04 by iez-zagh         ###   ########.fr       */
+/*   Created: 2023/11/21 01:56:32 by iez-zagh          #+#    #+#             */
+/*   Updated: 2023/11/29 09:24:04 by iez-zagh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
+#include "ft_printf.h"
 
-void	ft_putnbr(int nbr, int *len)
+void	ft_print_adress(unsigned long long nbr, int *len)
 {
-	long	n;
+	char				*base;
+	unsigned long long	b_len;
 
-	n = nbr;
-	if (n < 0)
-	{
-		ft_putchar('-', len);
-		n *= -1;
-	}
-	if (n < 10)
-	{
-		ft_putchar(n + '0', len);
-	}
+	b_len = 16;
+	base = "0123456789abcdef";
+	if (nbr < b_len)
+		ft_putchar(base[nbr], len);
 	else
 	{
-		ft_putnbr(n / 10, len);
-		ft_putnbr(n % 10, len);
+		ft_print_adress(nbr / b_len, len);
+		ft_print_adress(nbr % b_len, len);
 	}
 }

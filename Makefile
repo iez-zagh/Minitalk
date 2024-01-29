@@ -6,7 +6,7 @@
 #    By: iez-zagh <iez-zagh@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/16 09:06:15 by iez-zagh          #+#    #+#              #
-#    Updated: 2024/01/22 18:26:06 by iez-zagh         ###   ########.fr        #
+#    Updated: 2024/01/26 06:37:07 by iez-zagh         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,46 +14,65 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror
 RM = rm -f
 
-SOURCES1 = ft_putchar.c ft_putnbr.c ft_putstr.c ft_print_adress.c \
-			ft_putnbr_uns.c ft_printf.c ft_bzero.c
+PRINTF_PATH  = ./ft_printf
+PRINTF_NAME  = ftprintf
 
-SOURCES = server.c client.c
-SOURCES2 = server_bonus.c client_bonus.c
+# mandatory variables
 
-OBJS1 = ${SOURCES1:.c=.o}
-OBJS = ${SOURCES:.c=.o}
-OBJS2 = ${SOURCES2:_bonus.c=_bonus.o}
+SERVER_SOURCES = server.c
+CLIENT_SOURCES = client.c
 
-all: server client
+NAME = server
+CLIENT_NAME = client
 
-%.o: %.c
+# bonus variables
+
+SERVER_SOURCES_B = server_bonus.c
+CLIENT_SOURCES_B = client_bonus.c
+
+SERVER_NAME_B = server_bonus
+CLIENT_NAME_B = client_bonus
+
+
+SERVER_OBJS = ${SERVER_SOURCES:.c=.o}
+CLIENT_OBJS = ${CLIENT_SOURCES:.c=.o}
+
+SERVER_OBJS_B = ${SERVER_SOURCES_B:.c=.o}
+CLIENT_OBJS_B = ${CLIENT_SOURCES_B:.c=.o}
+
+
+all: printf $(NAME) $(CLIENT_NAME)
+
+%.o: %.c minitalk.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
-server: server.o $(OBJS1)
-	$(CC) $(CFLAGS) $^ -o $@
+$(NAME): $(SERVER_OBJS)
+	@$(CC) -L$(PRINTF_PATH) -lftprintf $(SERVER_OBJS) -o $(NAME)
 
-client: client.o $(OBJS1)
-	$(CC) $(CFLAGS) $^ -o $@
+$(CLIENT_NAME): $(CLIENT_OBJS)
+	@$(CC) -L$(PRINTF_PATH) -lftprintf $(CLIENT_OBJS) -o $(CLIENT_NAME)
 
-#bonus
+printf: minitalk.h
+		@make -C $(PRINTF_PATH)
 
-bonus: server_bonus client_bonus
+#bonus part
 
-%_bonus.o: %_bonus.c
-	$(CC) $(CFLAGS) -c $< -o $@
+bonus: printf $(SERVER_NAME_B) $(CLIENT_NAME_B)
 
-server_bonus: server_bonus.o $(OBJS1)
-	$(CC) $(CFLAGS) $^ -o $@
+$(SERVER_NAME_B): $(SERVER_OBJS_B)
+	@$(CC) -L$(PRINTF_PATH) -l$(PRINTF_NAME) $(SERVER_OBJS_B) -o $(SERVER_NAME_B)
 
-client_bonus: client_bonus.o $(OBJS1)
-	$(CC) $(CFLAGS) $^ -o $@
+$(CLIENT_NAME_B): $(CLIENT_OBJS_B)
+	@$(CC) -L$(PRINTF_PATH) -l$(PRINTF_NAME) $(CLIENT_OBJS_B) -o $(CLIENT_NAME_B)
 
 clean:
-	$(RM) $(OBJS) $(OBJS1) $(OBJS2) server.o client.o server_bonus.o client_bonus.o
+	$(RM) $(SERVER_OBJS) $(CLIENT_OBJS) $(SERVER_OBJS_B) $(CLIENT_OBJS_B)
+	@make clean -C $(PRINTF_PATH)
 
 fclean: clean
-	$(RM) server client server_bonus client_bonus
+	$(RM) $(CLIENT_NAME) $(NAME) $(CLIENT_NAME_B) $(SERVER_NAME_B)
+	@make fclean -C $(PRINTF_PATH)
 
 re: fclean all
 
-.PHONY: clean fclean all
+.PHONY: clean printf

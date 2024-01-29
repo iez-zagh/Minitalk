@@ -5,12 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: iez-zagh <iez-zagh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/16 10:17:27 by iez-zagh          #+#    #+#             */
-/*   Updated: 2024/01/18 18:49:52 by iez-zagh         ###   ########.fr       */
+/*   Created: 2024/01/26 06:37:54 by iez-zagh          #+#    #+#             */
+/*   Updated: 2024/01/26 06:37:56 by iez-zagh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minitalk.h"
+#include "ft_printf.h"
 
 void	print(char c, va_list ags1, int *len, int *k)
 {
@@ -22,6 +22,8 @@ void	print(char c, va_list ags1, int *len, int *k)
 		ft_putstr(va_arg(ags1, char *), len);
 	else if (c == '%')
 		ft_putchar(c, len);
+	else if (c == 'x' || c == 'X')
+		ft_putnbr_base(va_arg(ags1, unsigned int), c, len);
 	else if (c == 'p')
 	{
 		ft_putstr("0x", len);
